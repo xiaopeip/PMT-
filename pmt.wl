@@ -10,7 +10,7 @@ ipt=Import["D:\\bigdata\\project-2-pmt-go\\data\\playground-data.h5","Waveform",
 wave=ipt["Waveform"]-972-aver;
 event=ipt["EventID"];
 channel=ipt["ChannelID"];
-lowp=Flatten[Position[wave,x_/;x<-8]];
+lowp=Flatten[Position[wave,x_/;x<-10]];
 newfla=lowp-9;
 bianl=Table[b[y],{y,newfla}];
 For[restr=bianl[[1]]>=0;i=2,i<=Length[bianl],i=i+1,restr=(restr&&bianl[[i]]>=0)];
@@ -20,10 +20,12 @@ TimeConstrained[bianl/.FindMinimum[{Norm[Table[SPE[[Piecewise[{{x-y+1,x-y+1>0}},
 ]//Round;
 
 If[AllTrue[ans,#<=0&],
+	
 	AppendTo[opt,{<|"EventID"->event,"ChannelID"->channel,"PETime"->FirstPosition[wave,Min[wave]][[1]]-8,"Weight"->1|>}],
 	For[k=1,k<=Length[ans],k++,
 		If[ans[[k]]>0,
-		AppendTo[opt,{<|"EventID"->event,"ChannelID"->channel,"PETime"->newfla[[k]],"Weight"->ans[[k]]|>}]]]
+		AppendTo[opt,{<|"EventID"->event,"ChannelID"->channel,"PETime"->newfla[[k]],"Weight"->ans[[k]]|>}]]],
+	AppendTo[opt,{<|"EventID"->event,"ChannelID"->channel,"PETime"->FirstPosition[wave,Min[wave]][[1]]-8,"Weight"->1|>}];
 	];
 Print[j]
 ]
