@@ -1,25 +1,28 @@
 (* ::Package:: *)
 
-winstring="D:/bigdata/project-2-pmt-go/";
+Begin["IPOPTLink`Private`"]
+args=$ScriptCommandLine[[2]];
+numargs=ToExpression[args];
+winstring="./";
 spe1=Import[winstring<>"singlewave1.h5","spe"];
 aver=Import[winstring<>"average1.h5","averzero"];
 spe2=Import[winstring<>"singlewave2.h5","spe"];
 opt={};
 defround[x_]:=Piecewise[{{4*x^2,x>0.1&&x<0.5}},Round[x,1.]]
 
-For[j=1,j<=7770,j++,
-ipt=Import[winstring<>"data/playground-data.h5","Waveform","TakeElements"->{j}][[1]];
+For[j=1000*(numargs-1)+1,j<=1000*numargs,j++,
+ipt=Import[winstring<>"data/alpha-problem.h5","Waveform","TakeElements"->{j}][[1]];
 wave=ipt["Waveform"]-972-aver;
 event=ipt["EventID"];
 channel=ipt["ChannelID"];
 
 lowp=Flatten[Position[wave,x_/;x<-6.5]];
+If[lowp!={},
 If[lowp[[-1]]>1028,lowp=Drop[lowp,-1]];
 If[lowp[[1]]<2,lowp=Drop[lowp,1]];
-If[lowp!={},
 nihep=Union@@Table[lowp+n,{n,-7,15}];
 If[nihep[[-1]]>1029,nihep=Drop[nihep,-(nihep[[-1]]-1029)]];
-If[nihep[[1]]<1,nihep=Drop[nihep,1-nihep[[0]]]];
+If[nihep[[1]]<1,nihep=Drop[nihep,1-nihep[[1]]]];
 
 xuhao=Position[Table[wave[[i+1]]-wave[[i]]-wave[[i-1]]+wave[[i-2]],{i,lowp}],x_/;x>1.6]//Flatten;
 newfla=Union[lowp[[xuhao]]-10,lowp[[xuhao]]-9,lowp[[xuhao]]-8];
@@ -41,11 +44,11 @@ If[AllTrue[ans,#<=0.05&],
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-8,1.}];
 	];
  
-If[Mod[j,10]==0,Print[j]];
-]
-Export[winstring<>"jieguo/pgan.h5",{"Answer"->opt},"Datasets"]
+If[Mod[j,100]==0,Print[j]];
+];
+Export[winstring<>"jieguo/"<>args<>"-pgan.h5",{"Answer"->opt},"Datasets"]
 
-
+End[]
 
 
 
