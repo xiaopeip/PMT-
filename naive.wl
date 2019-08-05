@@ -1,9 +1,8 @@
 (* ::Package:: *)
 
-
 opt={};
 
-For[j=1,j<=70,j++,
+For[j=1,j<=7770,j++,
 ipt=Import["D:\\bigdata\\project-2-pmt-go\\data\\playground-data.h5","Waveform","TakeElements"->{j}][[1]];
 wave=ipt["Waveform"]-972;
 event=ipt["EventID"];
@@ -25,7 +24,7 @@ If[ans=={},
 
 If[Mod[j,100]==0,Print[j]];
 ]
-Export["D:\\bigdata\\project-2-pmt-go\\pgan.h5",{"Answer"->opt},"Datasets"]
+Export["D:\\bigdata\\project-2-pmt-go\\playg\\pgan.h5",{"Answer"->opt},"Datasets"]
 
 
 
