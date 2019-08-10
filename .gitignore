@@ -2,5 +2,5 @@ data
 .vscode
 __pycache__
 *.png
-jieguo
+jieguo/*.h5
 playg
