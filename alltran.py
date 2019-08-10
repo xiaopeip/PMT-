@@ -9,7 +9,7 @@ class AnswerData(tables.IsDescription):
     Weight     = tables.Float32Col(pos=3)
 
 # Create the output file and the group
-h5file = tables.open_file("jieguo/FirstAnswer.h5", mode="w", title="OneTonDetector")
+h5file = tables.open_file("result/Total.h5", mode="w", title="OneTonDetector")
 
 # Create tables
 AnswerTable = h5file.create_table("/", "Answer", AnswerData, "Answer")
@@ -17,11 +17,10 @@ answer = AnswerTable.row
 
 for i in range(1,1798):
     print(i)
-    with h5py.File("jieguo/"+f"{i}"+"-pgan.h5") as ipt:
+    with h5py.File("result/"+f"{i}"+"-pgan.h5") as ipt:
         hg=ipt["Answer"][()]
 # Write data 
     for j in range(len(hg)):
-        
         answer['EventID'] =  hg[j,0]
         answer['ChannelID'] = hg[j,1]
         answer['PETime'] = hg[j,2]
