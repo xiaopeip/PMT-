@@ -30,17 +30,17 @@ nihep=Union@@Table[lowp+n,{n,-7,15}];
 If[nihep[[-1]]>1029,nihep=Drop[nihep,-(nihep[[-1]]-1029)]];
 If[nihep[[1]]<1,nihep=Drop[nihep,1-nihep[[1]]]];
 
-(*找到二阶导大于1.5点向前平移9ns，并联合其左右的点作为寻根的集合possible_root*)
+(*找到二阶导大于1.5点向前平移9ns，并联合其左右的点作为寻根的集合possible*)
 xuhao=Position[Table[wave[[i+1]]-wave[[i]]-wave[[i-1]]+wave[[i-2]],{i,lowp}],x_/;x>1.5]//Flatten;
-possible_root=Union[lowp[[xuhao]]-10,lowp[[xuhao]]-9,lowp[[xuhao]]-8];
+possible=Union[lowp[[xuhao]]-10,lowp[[xuhao]]-9,lowp[[xuhao]]-8];
 
-bianl=Table[b[y],{y,possible_root}];(*生成拟合系数b[n]，下标n在集合possible_root中*)
+bianl=Table[b[y],{y,possible}];(*生成拟合系数b[n]，下标n在集合possible中*)
 For[restr=bianl[[1]]>=0;i=2,i<=Length[bianl],i=i+1,restr=(restr&&bianl[[i]]>=0)];(*生成约束表达式b[n]>=0*)
-mne=Table[spe1[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible_root}];(*单光子曲线平移生成矩阵mne*)
+mne=Table[spe1[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible}];(*单光子曲线平移生成矩阵mne*)
 
 (*求最小均方距离对应的系数b[n]，限定求解时间为0.25秒，将系数（小于0.1置为0）保存在ans中*)
 ans=defround/@TimeConstrained[FindArgMin[{Norm[mne.bianl-wave[[nihep]]],restr},bianl],.25,
-TimeConstrained[FindArgMin[{Norm[Table[spe2[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible_root}].bianl-wave[[nihep]]],restr},bianl],.25]
+TimeConstrained[FindArgMin[{Norm[Table[spe2[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible}].bianl-wave[[nihep]]],restr},bianl],.25]
 ]];
 
 (*下面输出结果*)
@@ -49,7 +49,7 @@ If[AllTrue[ans,#<=0.05&],
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}],(*如果没有在上面步骤中找到结果，则输出电压最小值对应的坐标*)
 	For[k=1,k<=Length[ans],k++,
 		If[ans[[k]]>0.05,
-		AppendTo[opt,{event,channel,possible_root[[k]]-1,ans[[k]]}]]],(*将大于0.1的系数作为weight输出，对应的possible_root为PETime*)
+		AppendTo[opt,{event,channel,possible[[k]]-1,ans[[k]]}]]],(*将大于0.1的系数作为weight输出，对应的possible为PETime*)
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}];
 	];
  
