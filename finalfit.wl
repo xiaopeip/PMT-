@@ -35,7 +35,7 @@ xuhao=Position[Table[wave[[i+1]]-wave[[i]]-wave[[i-1]]+wave[[i-2]],{i,lowp}],x_/
 possible=Union[lowp[[xuhao]]-10,lowp[[xuhao]]-9,lowp[[xuhao]]-8];
 
 bianl=Table[b[y],{y,possible}];(*生成拟合系数b[n]，下标n在集合possible中*)
-For[restr=bianl[[1]]>=0;i=2,i<=Length[bianl],i=i+1,restr=(restr&&bianl[[i]]>=0)];(*生成约束表达式b[n]>=0*)
+restr=VectorGreaterEqual[{bianl,0}];(*生成约束表达式b[n]>=0*)
 mne=Table[spe1[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible}];(*单光子曲线平移生成矩阵mne*)
 
 (*求最小均方距离对应的系数b[n]，限定求解时间为0.25秒，将系数（小于0.1置为0）保存在ans中*)
