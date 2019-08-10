@@ -5,9 +5,9 @@ BeginPackage["only`"];(*限定命名空间（上下文）*)
 args=$ScriptCommandLine[[2]];numargs=ToExpression[args];(*读取命令行参数，并转化为数字类型*)
 (*读入之前生成的单光子曲线和基准电压*)
 winstring="./";
-spe1=Import[winstring<>"singlewave1.h5","spe"];
-aver=Import[winstring<>"average1.h5","averzero"];
-spe2=Import[winstring<>"singlewave2.h5","spe"];
+spe1=Import[winstring<>"medium/singlewave1.h5","spe"];
+aver=Import[winstring<>"medium/average1.h5","averzero"];
+spe2=Import[winstring<>"medium/singlewave2.h5","spe"];
 
 defround[x_]:=Piecewise[{{x,x>0.1}},0];(*定义将小于0.1的数变为0，大于0.1的数不变的函数*)
 opt={};(*初始化输出*)
