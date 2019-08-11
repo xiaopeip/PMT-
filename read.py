@@ -24,6 +24,8 @@ while i <100000:
 sumwave=np.zeros(1029,dtype=np.int32)
 sinlen=len(sinevet)
 for x in range(sinlen):
+    if x%100==0:
+        print(f"{x*100/sinlen}%")
     posi=0
     while True:
         if WaveformTable[posi]["EventID"]==sinevet[x] and WaveformTable[posi]["ChannelID"]==sinchan[x]:
