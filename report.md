@@ -81,7 +81,7 @@ R(t_m)
 辛苦助教了~
 
 \section{程序运行方式}
-可以直接使用make运行程序，运行make或make all运行以下所有步骤；运行make medium运行第一步；运行make result运行第二步；运行make answer运行第三、四步。
+可以直接使用make运行程序，运行make或make all运行以下所有步骤（除第五步）；运行make medium运行第一步；运行make result运行第二步；运行make answer运行第三、四步；运行make clean清除所有第二步的输出文件。
 
 第一步需要运行read.py生成单光子波形，它接受一个命令行参数：0或1，指定所取的训练集，若为0，取atraining-0.h5，在/medium下输出singlewave1.h5和average1.h5；若为1，取atraining-1.h5，输出singlewave2.h5和average2.h5。其中singlewave1.h5和average1.h5在后面是必要的。所以python3 read.py 0必须运行，而read.py 1可以不运行（singlewave2.h5很少会用到）。pc上运行一次时间在20min左右（运行过程中有进度提示）。
 
@@ -91,6 +91,6 @@ R(t_m)
 
 第四步直接运行adjust.py，输出最终结果finalanswer.h5。在pc机上大约需要运行10min（运行时每10000组输出一次提示，共约1797000组）。
 
-
+可选：第五步直接运行compress.py可以将第四步输出的hdf5压缩输出compressedanswer,h5
 
 \end{document}
