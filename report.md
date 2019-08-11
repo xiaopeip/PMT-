@@ -1,0 +1,6 @@
+配置说明
+本项目的主体程序（finalfit.wl）使用了mathematica（wolfram语言）。其余部分均由python程序完成，所用到的第三方库包括numpy，h5py，tables。mathematica是一款科学计算软件，符号计算与数值计算均可胜任，在物理学领域使用较广泛；其使用的是wolfram语言，mathematica软件是收费的，但wolfram语言内核是免费的。考虑到此语言较小众，简单介绍配置方法如下：
+配置过程是免费的，但是需要连网认证wolframID。劳烦助教进入网站（https://www.wolfram.com/engine/），注册一个wolfram账号并下载wolfram引擎for Linux（windows应该也可以），之后sudo运行下载好的shell脚本安装即可。命令行运行wolframscript就会进入wolfram语言交互式环境，运行wolframscript -file file.wl则会运行脚本file.wl。第一次使用时需要认证ID，输入账号和密码即可（此账号须与下载时注册的账号相同）。wolfram语言中一切都是函数，包括循环控制。vscode中有对wolfram语言的支持，而wolfram官网有非常详细的参考资料，每一个函数都有详尽的解释。考虑到此语言较小众，我在finalfit.wl程序中的注释也比较详细。
+
+思路说明
+本项目的思路主要是受启发于第一阶段作业中波形的生成方法，即平移叠加的过程。现在主要考虑如何还原这一过程。由于时间序列是离散的，
