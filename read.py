@@ -1,9 +1,6 @@
 import h5py
 import tables
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-from matplotlib import pyplot as plt
 import sys
 args=int(sys.argv[1])
 
