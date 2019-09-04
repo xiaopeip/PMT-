@@ -9,13 +9,13 @@ class AnswerData(tables.IsDescription):
     Weight     = tables.Float32Col(pos=3)
 
 # Create the output file and the group
-h5file = tables.open_file("result/Total.h5", mode="w", title="OneTonDetector")
+h5file = tables.open_file("result/play-ans.h5", mode="w", title="OneTonDetector")
 
 # Create tables
 AnswerTable = h5file.create_table("/", "Answer", AnswerData, "Answer")
 answer = AnswerTable.row
 
-with h5py.File("result/play-pgan.h5") as ipt:
+with h5py.File("result/play-plan.h5") as ipt:
     hg=ipt["Answer"][()]
 # Write data 
     for j in range(len(hg)):
