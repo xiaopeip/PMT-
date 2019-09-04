@@ -15,10 +15,8 @@ h5file = tables.open_file("result/Total.h5", mode="w", title="OneTonDetector")
 AnswerTable = h5file.create_table("/", "Answer", AnswerData, "Answer")
 answer = AnswerTable.row
 
-for i in range(1,1798):
-    print(i)
-    with h5py.File("result/"+f"{i}"+"-pgan.h5") as ipt:
-        hg=ipt["Answer"][()]
+with h5py.File("result/play-pgan.h5") as ipt:
+    hg=ipt["Answer"][()]
 # Write data 
     for j in range(len(hg)):
         answer['EventID'] =  hg[j,0]
