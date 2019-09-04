@@ -3,7 +3,7 @@
 BeginPackage["only`"];(*\:9650\:5b9a\:547d\:540d\:7a7a\:95f4\:ff08\:4e0a\:4e0b\:6587\:ff09*)
 (*args=$ScriptCommandLine[[2]];numargs=ToExpression[args];\:8bfb\:53d6\:547d\:4ee4\:884c\:53c2\:6570\:ff0c\:5e76\:8f6c\:5316\:4e3a\:6570\:5b57\:7c7b\:578b*)
 (*\:8bfb\:5165\:4e4b\:524d\:751f\:6210\:7684\:5355\:5149\:5b50\:66f2\:7ebf\:548c\:57fa\:51c6\:7535\:538b*)
-winstring="C:/xiaopeip/PMT-/";
+winstring="./";
 spe1=Import[winstring<>"medium/singlewave1.h5","spe"];
 aver=Import[winstring<>"medium/average1.h5","averzero"];
 spe2=Import[winstring<>"medium/singlewave2.h5","spe"];
