@@ -1,8 +1,12 @@
 (* ::Package:: *)
 
 BeginPackage["only`"];
+opt={};
 winstring="C:/xiaopeip/PMT-/";
 yuanru=Import[winstring<>"result/"<>"play-plan.h5","Answer"];
+spe1=Import[winstring<>"medium/singlewave1.h5","spe"];
+aver=Import[winstring<>"medium/average1.h5","averzero"];
+spe2=Import[winstring<>"medium/singlewave2.h5","spe"];
 
 evep=yuanru[[1]][[1]];
 chap=yuanru[[1]][[2]];
@@ -17,22 +21,48 @@ For[n=1,n<=length,n=n+1,
         AppendTo[jiedian,n];
         {evep,chap}={yuanru[[n]][[1]],yuanru[[n]][[2]]}];
 ]
-Print[jiedian[[1;;10]]] 
+
 AppendTo[jiedian,n];
 
-For[i=1,i<=Length[jiedian]-1,i=i+1,
-    time=yuanru[[jiedian[[i]];;jiedian[[i+1]]-1]][[3]];
-    weight=yuanru[[jiedian[[i]];;jiedian[[i+1]]-1]][[4]];
+For[j=1,j<=length-1,j=j+1,
+	copy=yuanru[[jiedian[[j]];;jiedian[[j+1]]-1]];
+	event=copy[[1,1]];
+	channel=copy[[1,2]];
+    time=copy[[All,3]];
+    weight=copy[[All,4]];
+    ipt=Import[winstring<>"data/playground-data.h5","Waveform","TakeElements"->{j}][[1]];
+	wave=ipt["Waveform"]-972-aver;
+	Assert[event=ipt["EventID"]&&channel=ipt["ChannelID"]];
+	
+	lowp=Flatten[Position[wave,x_/;x<-6.5]];
+	If[lowp!={},(*lowp\:4e3a\:7a7a\:5219\:8df3\:8fc7\:540e\:9762\:7684\:62df\:5408\:6b65\:9aa4*)
+	If[lowp[[-1]]>1028,lowp=Drop[lowp,-1]];
+	If[lowp[[1]]<2,lowp=Drop[lowp,1]];
+
+	nihep=Union@@Table[lowp+n,{n,-7,15}];
+	If[nihep[[-1]]>1029,nihep=Drop[nihep,-(nihep[[-1]]-1029)]];
+	If[nihep[[1]]<1,nihep=Drop[nihep,1-nihep[[1]]]];
     
-    mne=Table[spe1[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,possible}];
-    newfla=Tuples[Transpose[{Floor[weight],Cell[weight]}]];
-    MinimalBy[newfla,Norm[mne.#-wave[[nihep]]]&];
-    
-    If[Mod[i,1000]==0,Print[i]];
-    ]
+    mne=Table[spe1[[Piecewise[{{x-y+1,x-y+1>0}},x-y+1030]]],{x,nihep},{y,time}];
+    newfla=Tuples[Transpose[{Floor[weight],Ceiling[weight]}]];
+    ans=MinimalBy[newfla,Norm[mne.#-wave[[nihep]]]&]//AbsoluteTiming//Print;
+    (*TimeConstrained[0.5,,weight];*)
+	Print[weight];
+    ,ans={}];
+    If[AllTrue[ans,#<=0.05&],
+	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}],(*\:5982\:679c\:6ca1\:6709\:5728\:4e0a\:9762\:6b65\:9aa4\:4e2d\:627e\:5230\:7ed3\:679c\:ff0c\:5219\:8f93\:51fa\:7535\:538b\:6700\:5c0f\:503c\:5bf9\:5e94\:7684\:5750\:6807*)
+	For[k=1,k<=Length[ans],k++,
+		If[ans[[k]]>0.05,
+		AppendTo[opt,{event,channel,time[[k]]-1,ans[[k]]}]]],(*\:5c06\:5927\:4e8e0.1\:7684\:7cfb\:6570\:4f5c\:4e3aweight\:8f93\:51fa\:ff0c\:5bf9\:5e94\:7684possible\:4e3aPETime*)
+	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}];
+	];
+    If[Mod[j,10]==0,Print[j]];
+ ]
 
 
+Export[winstring<>"result/play-resu.h5",{"Answer"->opt},"Datasets"];
 
+EndPackage[]
 
 
 
