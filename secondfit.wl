@@ -2,7 +2,7 @@
 
 BeginPackage["only`"];
 opt={};
-winstring="C:/xiaopeip/PMT-/";
+winstring="./";
 yuanru=Import[winstring<>"result/"<>"play-plan.h5","Answer"];
 SPE=Import[winstring<>"medium/SPE.h5","SPE"];
 spe1=Import[winstring<>"medium/singlewave1.h5","spe"];
@@ -74,7 +74,7 @@ For[j=1,j<=7770,j=j+1,
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}],(*\:5982\:679c\:6ca1\:6709\:5728\:4e0a\:9762\:6b65\:9aa4\:4e2d\:627e\:5230\:7ed3\:679c\:ff0c\:5219\:8f93\:51fa\:7535\:538b\:6700\:5c0f\:503c\:5bf9\:5e94\:7684\:5750\:6807*)
 	For[k=1,k<=Length[ans],k++,
 		If[ans[[k]]>0.05,
-		AppendTo[opt,{event,channel,time[[k]]-1,ans[[k]]}]]],(*\:5c06\:5927\:4e8e0.1\:7684\:7cfb\:6570\:4f5c\:4e3aweight\:8f93\:51fa\:ff0c\:5bf9\:5e94\:7684possible\:4e3aPETime*)
+		AppendTo[opt,{event,channel,time[[k]],ans[[k]]}]]],(*\:5c06\:5927\:4e8e0.1\:7684\:7cfb\:6570\:4f5c\:4e3aweight\:8f93\:51fa\:ff0c\:5bf9\:5e94\:7684possible\:4e3aPETime*)
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}];
 	
 	];
