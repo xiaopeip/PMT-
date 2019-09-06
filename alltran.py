@@ -15,7 +15,7 @@ h5file = tables.open_file("result/play-ans.h5", mode="w", title="OneTonDetector"
 AnswerTable = h5file.create_table("/", "Answer", AnswerData, "Answer")
 answer = AnswerTable.row
 
-with h5py.File("result/play-plan.h5") as ipt:
+with h5py.File("result/play-resu.h5") as ipt:
     hg=ipt["Answer"][()]
 # Write data 
     for j in range(len(hg)):
