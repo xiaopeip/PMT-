@@ -5,3 +5,4 @@ __pycache__
 result/*.h5
 playg
 .vs
+*.nb
