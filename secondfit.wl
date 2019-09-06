@@ -33,12 +33,12 @@ For[j=1,j<=7770,j=j+1,
 	wave=ipt["Waveform"]-972-aver;
 	Assert[event=ipt["EventID"]&&channel=ipt["ChannelID"]];
 	
-	Flatten[weight]//Print;
+	(*Flatten[weight]//Print;
 	Print[time];
 	Print[Norm[mne.Flatten[weight]-wave[[nihep]]]];
-	Print[Norm[mne2.Flatten[weight]-wave[[nihep]]]];
+	Print[Norm[mne2.Flatten[weight]-wave[[nihep]]]];*)
 	
-	fixed=Position[time,x_/;NumericQ[x]&&FreeQ[time,x+1|x-1],1]//Flatten;
+	fixed=Position[time,x_/;NumericQ[x]&&FreeQ[time,x+1|x-1|x+2|x-2],1]//Flatten;
 	weight[[fixed]]=Round[weight[[fixed]]]+0.;
 	
 	tire:=Length[weight]-Length[fixed];
@@ -47,7 +47,7 @@ For[j=1,j<=7770,j=j+1,
 		fixed=TakeSmallestBy[weight->"Index",Abs[#-Round[#]]&,Length[weight]-17];
 		weight[[fixed]]=Round[weight[[fixed]]]+0.;
 		];
-	Print[tire];
+	(*Print[tire];*)
 	
 	lowp=Flatten[Position[wave,x_/;x<-6.5]];
 	If[lowp!={},(*lowp\:4e3a\:7a7a\:5219\:8df3\:8fc7\:540e\:9762\:7684\:62df\:5408\:6b65\:9aa4*)
@@ -64,10 +64,10 @@ For[j=1,j<=7770,j=j+1,
     (*MinimalBy[newfla,Norm[mne2.#-wave[[nihep]]]&][[1]]//AbsoluteTiming//Print;*)
     ans=MinimalBy[Norm[mne2.#-wave[[nihep]]]&][newfla][[1]];
     (*TimeConstrained[0.5,,weight];*)
-	Print[weight];
+	(*Print[weight];
 	Print[Norm[mne.ans-wave[[nihep]]]];
 	Print[Norm[mne2.ans-wave[[nihep]]]];
-	Print[ans];
+	Print[ans];*)
 	
     ,ans={}];
     If[AllTrue[ans,#<=0.05&],
@@ -78,7 +78,7 @@ For[j=1,j<=7770,j=j+1,
 	AppendTo[opt,{event,channel,FirstPosition[wave,Min[wave]][[1]]-9,1.}];
 	
 	];
-    If[Mod[j,10]==0,Print[j]];
+    If[Mod[j,100]==0,Print[j]];
  ]
 
 Export[winstring<>"result/play-resu.h5",{"Answer"->opt},"Datasets"];
